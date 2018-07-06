@@ -1,0 +1,128 @@
+﻿@model IEnumerable<TodoAPI.Models.Todo>
+
+<h1 class="display-1">TODO: </h1>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Done)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ID);
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-lg-push-6">
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+
+            <td class="checkbox col-md-1">
+                @Html.CheckBoxFor(modelItem => item.Done)
+            </td>
+            <td class="col-md-1">
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                <div class="form-group col-md-4">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-danger" })
+                </div>
+
+            </td>
+        </tr>
+    }
+
+</table>
+@*----------------------------------------------Vue--------------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------*@
+
+<div id="app">
+        {{money*2>5 ? 'nagyobb' : 'kisebb'}} 
+    </div>
+
+<div id="fname">
+    {{ getFullName() }}
+</div>
+
+<div id="paramFName">
+    {{ getFullName(firstname, lastname) }}
+</div>
+
+<div id="aLink">
+    <a v-bind:href="link">Ugrás az oldalra</a>
+</div>
+
+<div id="diTit">
+    <div v-bind:title="title1 + ' ' + title2 + ' ' + title3">
+        Dinamikus title teszt
+    </div>
+</div>
+
+
+@*----------------------------------------------Vue-Script-------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------*@
+
+
+<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            money: 4
+
+        }
+    });
+
+    new Vue({
+        el: "#fname",
+        data: {
+            firstname: "Evans",
+            lastname: "Racok"
+        },
+        methods: {
+            getFullName: function () {
+                return this.firstname + ' ' + this.lastname;
+            }
+        }
+    });
+
+    new Vue({
+        el: '#paramFName',
+        data: {
+            firstname: 'Masale',
+            lastname: 'Aletran'
+        },
+        methods: {
+            getFullName: function (first, last) {
+                return first + ' ' + last;
+            }
+        }
+    });
+
+    new Vue({
+        el: "#aLink",
+        data: {
+            link: "https://vuejs.hu"
+        }
+    });
+
+    new Vue({
+        el: "#dirTit",
+        data: {
+            title1: "Dinamikusan",
+            title2: "hozzáadott",
+            title3: "cím"
+        }
+    })
+</script>
