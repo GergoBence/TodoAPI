@@ -106,17 +106,31 @@
 
 @*kétirányú adatösszekötés*@
 @*Módosítók
--trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
--number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
--lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy 
-    írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti 
-    a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
+    -trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
+    -number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
+    -lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy
+        írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti
+        a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
 <div id="cmDt">
     <input type="text" v-model="name" />
     <p>Your name is: {{ name }}</p>
 </div>
 
+@*A feltételek kezelése sablon fájlunkban az v-if, v-else-if, v-else direktívákkal történik.*@
 
+<div id="kor2">
+    <p v-if="kor < 18">Az illető gyerek</p>
+    <p v-else-if="kor <60">Az illető közép korú</p>
+    <p v-else>Az illető idős korú</p>
+</div>
+
+<div id="kor">
+    <p v-if="kor < 18 && kor>0">Az illető gyerek</p>
+    <p v-else-if="kor <60 & kor>17">Az illető közép korú</p>
+    <p v-else-if="kor >59">Az illető idős korú</p>
+    <p v-else>nincs érték</p>
+    <input type="text" v-model="kor" />
+</div>
 
 
 @*----------------------------------------------Vue-Script-------------------------------------------*@
@@ -225,6 +239,20 @@
         el: "#cmDt",
         data: {
             name: ''
+        }
+    })
+
+    new Vue({
+        el: "#kor",
+        data: {
+            kor: 22
+        }
+    })
+
+    new Vue({
+        el: "#kor2",
+        data: {
+            kor: 22
         }
     })
 
