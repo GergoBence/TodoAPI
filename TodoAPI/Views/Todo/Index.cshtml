@@ -118,18 +118,46 @@
 
 @*A feltételek kezelése sablon fájlunkban az v-if, v-else-if, v-else direktívákkal történik.*@
 
-<div id="kor2">
+<div id="kor">
     <p v-if="kor < 18">Az illető gyerek</p>
     <p v-else-if="kor <60">Az illető közép korú</p>
     <p v-else>Az illető idős korú</p>
 </div>
 
-<div id="kor">
+<div id="kor2">
     <p v-if="kor < 18 && kor>0">Az illető gyerek</p>
     <p v-else-if="kor <60 & kor>17">Az illető közép korú</p>
     <p v-else-if="kor >59">Az illető idős korú</p>
     <p v-else>nincs érték</p>
     <input type="text" v-model="kor" />
+</div>
+
+@*több elem egyy ágban való megjelenítése*@
+
+<div id="kor3">
+    <p v-if="kor < 18">Gyerek</p>
+    <p v-else-if="kor<60">középkorú</p>
+    <p v-else>öreg</p>
+
+    <template v-if="kor>60">
+        <p>nyugdíjas</p>
+        <p>vén</p>
+    </template>
+</div>
+
+@*A v-show direktíva használatakor az elemünk amelyen alkalmazzuk a DOM-ban marad eltűntetés esetén, 
+tehát amikor a v-show értéke igaz.
+A v-show értéke hamis, akkor egy inline stílust kap, mégpedig a display:none értékkel. 
+Ha pedig true, akkor pedig ez eltűnik.*@
+
+<div id="show">
+    <div v-show="showText">
+        <p>show the first text</p>
+    </div>
+    <div v-show="!showText">
+        <p>show the second text</p>
+    </div>
+    <button v-on:click="showText = !showText"> Toggle Texts</button>
 </div>
 
 
@@ -256,6 +284,19 @@
         }
     })
 
+    new Vue({
+        el: "#kor3",
+        data: {
+            kor: 62
+        }
+    })
+
+    new Vue({
+        el: "#show",
+        data: {
+            showText: true,
+        }
+    })
 
 </script>
 
