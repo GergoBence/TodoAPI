@@ -48,8 +48,8 @@
 @*---------------------------------------------------------------------------------------------------*@
 
 <div id="app">
-        {{money*2>5 ? 'nagyobb' : 'kisebb'}} 
-    </div>
+    {{money*2>5 ? 'nagyobb' : 'kisebb'}}
+</div>
 
 <div id="fname">
     {{ getFullName() }}
@@ -68,6 +68,55 @@
         Dinamikus title teszt
     </div>
 </div>
+
+<div id="click1">
+    <button v-on:click="openAlertWindow">Click here!</button>
+</div>
+
+<div id="click2">
+    <button v-on:click="openAlertWindow2('Button clicked2!', $event)">Click Here 2 !</button>
+</div>
+
+@*mivel a diven és a gombon is rajta van a click="openwindow esemény duplán futna le, de a .stop-al kivédi"*@
+<div id="click3">
+    <div v-on:click="openWindow">
+        <button v-on:click.stop="openWindow">Click Here 3</button>
+    </div>
+</div>
+
+@*prevent felülírja a default action-t*@
+<a id="fkLink" href="https://vuejshu" v-on:click.prevent="doSomething">Fake Jump to link</a>
+
+@*Key modifier*@
+<div id="keyMod">
+    <input type="text" v-on:keyup.enter="openWindow">
+</div>
+@*További módosítók: .tab, .delete, .esc, .space, .up, .down, .left, .right, .enter*@
+
+
+@*multiple key modifier space és enter között vagy kapcsolat van*@
+@*<div id="app">
+        <input type="text" v-on:keyup.enter.space="openWindow">
+    </div>*@
+
+@*@*key modifier: shift a módosító ami kell az enterhez hogy a folyamat lefusson (and kapcsolat)*@
+@*<div id="app">
+        <input type="text" v-on:keyup.shift.enter="openWindow">
+    </div>*@
+
+@*kétirányú adatösszekötés*@
+@*Módosítók
+-trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
+-number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
+-lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy 
+    írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti 
+    a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
+<div id="cmDt">
+    <input type="text" v-model="name" />
+    <p>Your name is: {{ name }}</p>
+</div>
+
+
 
 
 @*----------------------------------------------Vue-Script-------------------------------------------*@
@@ -124,5 +173,61 @@
             title2: "hozzáadott",
             title3: "cím"
         }
+    });
+
+    new Vue({
+        el: "#click1",
+        methods: {
+            openAlertWindow: function () {
+                alert('Button Clicked!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#click2",
+        methods: {
+            openAlertWindow2: function (param, event) {
+                console.log(event);
+                alert(param);
+            }
+        }
+    });
+
+    new Vue({
+        el: "#click3",
+        methods: {
+            openWindow: function () {
+                alert('Button clicked!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#fkLink",
+        methods: {
+            doSomething: function () {
+                alert('Activate TrapCard!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#keyMod",
+        methods: {
+            openWindow: function () {
+                alert('Enter Key pressed!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#cmDt",
+        data: {
+            name: ''
+        }
     })
+
+
 </script>
+
