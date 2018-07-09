@@ -22,7 +22,7 @@ namespace TodoAPI.Models
 
         public void GenerateList()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var item = new Todo();
                 item.Content = i.ToString();

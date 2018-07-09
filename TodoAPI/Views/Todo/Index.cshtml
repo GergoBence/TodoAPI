@@ -47,118 +47,170 @@
 @*----------------------------------------------Vue--------------------------------------------------*@
 @*---------------------------------------------------------------------------------------------------*@
 
-<div id="app">
-    {{money*2>5 ? 'nagyobb' : 'kisebb'}}
-</div>
 
-<div id="fname">
-    {{ getFullName() }}
-</div>
 
-<div id="paramFName">
-    {{ getFullName(firstname, lastname) }}
-</div>
-
-<div id="aLink">
-    <a v-bind:href="link">Ugrás az oldalra</a>
-</div>
-
-<div id="diTit">
-    <div v-bind:title="title1 + ' ' + title2 + ' ' + title3">
-        Dinamikus title teszt
+    <div id="app">
+        {{money*2>5 ? 'nagyobb' : 'kisebb'}}
     </div>
-</div>
 
-<div id="click1">
-    <button v-on:click="openAlertWindow">Click here!</button>
-</div>
-
-<div id="click2">
-    <button v-on:click="openAlertWindow2('Button clicked2!', $event)">Click Here 2 !</button>
-</div>
-
-@*mivel a diven és a gombon is rajta van a click="openwindow esemény duplán futna le, de a .stop-al kivédi"*@
-<div id="click3">
-    <div v-on:click="openWindow">
-        <button v-on:click.stop="openWindow">Click Here 3</button>
+    <div id="fname">
+        {{ getFullName() }}
     </div>
-</div>
 
-@*prevent felülírja a default action-t*@
-<a id="fkLink" href="https://vuejshu" v-on:click.prevent="doSomething">Fake Jump to link</a>
-
-@*Key modifier*@
-<div id="keyMod">
-    <input type="text" v-on:keyup.enter="openWindow">
-</div>
-@*További módosítók: .tab, .delete, .esc, .space, .up, .down, .left, .right, .enter*@
-
-
-@*multiple key modifier space és enter között vagy kapcsolat van*@
-@*<div id="app">
-        <input type="text" v-on:keyup.enter.space="openWindow">
-    </div>*@
-
-@*@*key modifier: shift a módosító ami kell az enterhez hogy a folyamat lefusson (and kapcsolat)*@
-@*<div id="app">
-        <input type="text" v-on:keyup.shift.enter="openWindow">
-    </div>*@
-
-@*kétirányú adatösszekötés*@
-@*Módosítók
-    -trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
-    -number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
-    -lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy
-        írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti
-        a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
-<div id="cmDt">
-    <input type="text" v-model="name" />
-    <p>Your name is: {{ name }}</p>
-</div>
-
-@*A feltételek kezelése sablon fájlunkban az v-if, v-else-if, v-else direktívákkal történik.*@
-
-<div id="kor">
-    <p v-if="kor < 18">Az illető gyerek</p>
-    <p v-else-if="kor <60">Az illető közép korú</p>
-    <p v-else>Az illető idős korú</p>
-</div>
-
-<div id="kor2">
-    <p v-if="kor < 18 && kor>0">Az illető gyerek</p>
-    <p v-else-if="kor <60 & kor>17">Az illető közép korú</p>
-    <p v-else-if="kor >59">Az illető idős korú</p>
-    <p v-else>nincs érték</p>
-    <input type="text" v-model="kor" />
-</div>
-
-@*több elem egyy ágban való megjelenítése*@
-
-<div id="kor3">
-    <p v-if="kor < 18">Gyerek</p>
-    <p v-else-if="kor<60">középkorú</p>
-    <p v-else>öreg</p>
-
-    <template v-if="kor>60">
-        <p>nyugdíjas</p>
-        <p>vén</p>
-    </template>
-</div>
-
-@*A v-show direktíva használatakor az elemünk amelyen alkalmazzuk a DOM-ban marad eltűntetés esetén, 
-tehát amikor a v-show értéke igaz.
-A v-show értéke hamis, akkor egy inline stílust kap, mégpedig a display:none értékkel. 
-Ha pedig true, akkor pedig ez eltűnik.*@
-
-<div id="show">
-    <div v-show="showText">
-        <p>show the first text</p>
+    <div id="paramFName">
+        {{ getFullName(firstname, lastname) }}
     </div>
-    <div v-show="!showText">
-        <p>show the second text</p>
+
+    <div id="aLink">
+        <a v-bind:href="link">Ugrás az oldalra</a>
     </div>
-    <button v-on:click="showText = !showText"> Toggle Texts</button>
-</div>
+
+    <div id="diTit">
+        <div v-bind:title="title1 + ' ' + title2 + ' ' + title3">
+            Dinamikus title teszt
+        </div>
+    </div>
+
+    <div id="click1">
+        <button v-on:click="openAlertWindow">Click here!</button>
+    </div>
+
+    <div id="click2">
+        <button v-on:click="openAlertWindow2('Button clicked2!', $event)">Click Here 2 !</button>
+    </div>
+
+    @*mivel a diven és a gombon is rajta van a click="openwindow esemény duplán futna le, de a .stop-al kivédi"*@
+    <div id="click3">
+        <div v-on:click="openWindow">
+            <button v-on:click.stop="openWindow">Click Here 3</button>
+        </div>
+    </div>
+
+    @*prevent felülírja a default action-t*@
+    <a id="fkLink" href="https://vuejshu" v-on:click.prevent="doSomething">Fake Jump to link</a>
+
+    @*Key modifier*@
+    <div id="keyMod">
+        <input type="text" v-on:keyup.enter="openWindow">
+    </div>
+    @*További módosítók: .tab, .delete, .esc, .space, .up, .down, .left, .right, .enter*@
+
+
+    @*multiple key modifier space és enter között vagy kapcsolat van*@
+    @*<div id="app">
+            <input type="text" v-on:keyup.enter.space="openWindow">
+        </div>*@
+
+    @*@*key modifier: shift a módosító ami kell az enterhez hogy a folyamat lefusson (and kapcsolat)*@
+    @*<div id="app">
+            <input type="text" v-on:keyup.shift.enter="openWindow">
+        </div>*@
+
+    @*kétirányú adatösszekötés*@
+    @*Módosítók
+        -trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
+        -number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
+        -lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy
+            írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti
+            a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
+    <div id="cmDt">
+        <input type="text" v-model="name" />
+        <p>Your name is: {{ name }}</p>
+    </div>
+
+    @*A feltételek kezelése sablon fájlunkban az v-if, v-else-if, v-else direktívákkal történik.*@
+
+    <div id="kor">
+        <p v-if="kor < 18">Az illető gyerek</p>
+        <p v-else-if="kor <60">Az illető közép korú</p>
+        <p v-else>Az illető idős korú</p>
+    </div>
+
+    <div id="kor2">
+        <p v-if="kor < 18 && kor>0">Az illető gyerek</p>
+        <p v-else-if="kor <60 & kor>17">Az illető közép korú</p>
+        <p v-else-if="kor >59">Az illető idős korú</p>
+        <p v-else>nincs érték</p>
+        <input type="text" v-model="kor" />
+    </div>
+
+    @*több elem egyy ágban való megjelenítése*@
+
+    <div id="kor3">
+        <p v-if="kor < 18">Gyerek</p>
+        <p v-else-if="kor<60">középkorú</p>
+        <p v-else>öreg</p>
+
+        <template v-if="kor>60">
+            <p>nyugdíjas</p>
+            <p>vén</p>
+        </template>
+    </div>
+
+    @*A v-show direktíva használatakor az elemünk amelyen alkalmazzuk a DOM-ban marad eltűntetés esetén,
+        tehát amikor a v-show értéke igaz.
+        A v-show értéke hamis, akkor egy inline stílust kap, mégpedig a display:none értékkel.
+        Ha pedig true, akkor pedig ez eltűnik.*@
+
+    <div id="show">
+        <div v-show="showText">
+            <p>show the first text</p>
+        </div>
+        <div v-show="!showText">
+            <p>show the second text</p>
+        </div>
+        <button v-on:click="showText = !showText"> Toggle Texts</button>
+    </div>
+
+    @*setTimeout csak a késleltetett betöltés modellezésére van*@
+
+    <div id="cloack">
+        <p v-cloak>{{ text }}</p>
+    </div>
+    @* ehhez be kell rakni a CSS-be:
+            [v-cloack]{
+            display:none;
+        }*@
+
+    <div id="for">
+        <ul>
+            <li v-for="car in cars">
+                {{ car }}
+            </li>
+        </ul>
+    </div>
+
+    <div id="for2">
+        <ul>
+            <li v-for="car in cars">
+                <div>{{ car.name }}: ({{ car.color}})</div>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <div id="for3">
+        <ul>
+            <li v-for="(car, index) in cars">
+                <div> {{ index+1 }}. {{car.name}}: {{car.color}}</div>
+            </li>
+        </ul>
+    </div>
+
+    <div id="for4">
+        <p>-----------------------------</p>
+        <ul>
+            <li v-for="(value, propertyName, index) in person">
+                <div>
+                    {{ index+1 }}. {{ propertyName }}: {{ value }}
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+
 
 
 @*----------------------------------------------Vue-Script-------------------------------------------*@
@@ -297,6 +349,60 @@ Ha pedig true, akkor pedig ez eltűnik.*@
             showText: true,
         }
     })
+
+    setTimeout(function () {
+        new Vue({
+            el: "#cloack",
+            data: {
+                text: "hello world"
+            }
+        })
+    }, 3000);
+
+    new Vue({
+        el: "#for",
+        data: {
+            cars: ['BMW', 'Ford', 'Dodge', 'Subaru']
+        }
+    })
+
+    new Vue({
+        el: "#for2",
+        data: {
+            cars: [
+                { name: "BMW", color: "Black" },
+                { name: "Ford", color: "blue" },
+                { name: "Dodge", color: "grey" },
+                { name: "Subaru", color: "white" }
+            ]
+        }
+    })
+
+    new Vue({
+        el: "#for3",
+        data: {
+            cars: [
+                { name: "BMW", color: "Black" },
+                { name: "Ford", color: "White" },
+                { name: "Subaru", color: "Blue" },
+                { name: "Toyota", color: "White" },
+            ]
+        }
+    })
+
+    new Vue({
+        el: "#for4",
+        data: {
+            person: {
+                name: "John Doe",
+                age: 36,
+                sex: "male",
+                job: "postman"
+            }
+        }
+    })
+
+
 
 </script>
 
