@@ -9,78 +9,56 @@ namespace TodoAPI.Controllers
 {
     public class TodoController : Controller
     {
-        TodoRepository _todoRepository = new TodoRepository();
-        // GET: Todo
-
-        //public ActionResult Index()
-        //{
-        //    ViewBag.Title = "TODO:";
-        //    return View();
-        //}
-
-
-
-        public ActionResult Index()
-        {
-            
-            var td = _todoRepository.GetAll();
-            return View(td);
-        }
-
         [HttpGet]
-        public ActionResult Edit(int id)
+        public ActionResult Get()
         {
-            var todo = _todoRepository.GetTodo(id);
-            var td = todo;
-            //TODO: szerkesztési adatok Get
-            
-            return View(td);
-        }
-        [HttpPost]
-        public ActionResult Edit(Todo todo)
-        {
-            if (!ModelState.IsValid)
+            using (var db = new TodoContext())
             {
-                return View(todo);
+                var repository = new Repository<Todo>(db);
+                return Json(repository.GetAll(), JsonRequestBehavior.AllowGet);
             }
-            //TODO: Szerkesztési adatok Post
-            var td = todo;
-            _todoRepository.UpdateTodo(td);
-            return RedirectToAction("Index");
-
         }
 
+        [HttpPost]
+        public ActionResult Post([Bind]Todo todo)
+        {
+            using (var db = new TodoContext())
+            {
+                var repository = new Repository<Todo>(db);
+                repository.Add(todo);
+
+                return Json(todo);
+            }
+        }
+
+        [HttpPatch]
+        public ActionResult Patch([Bind]Todo item)
+        {
+            using (var db = new TodoContext())
+            {
+                var repository = new Repository<Todo>(db);
+                var todoInDb = repository.Get(item.ID);
+
+                todoInDb.Content = item.Content;
+                todoInDb.Done = item.Done;
+
+                repository.ApplyChanges();
+
+                return Json(item);
+            }
+        }
+
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var todo = _todoRepository.GetTodo(id);
-            //TODO: Szerk A Delete
-            var td = todo;
-            return View(td);
-        }
-        [HttpPost]
-        public ActionResult Delete(Todo todo)
-        {
-            _todoRepository.DeleteTodo(todo.ID);
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult Create()
-        {
-            return View(new Todo());
-        }
-        [HttpPost]
-        public ActionResult Create(Todo todo)
-        {
-            if (!ModelState.IsValid)
+            using (var db = new TodoContext())
             {
-                return View(todo);
+                var repository = new Repository<Todo>(db);
+                var item = repository.Get(id);
+                repository.Delete(item);
+
+                return Json(item);
             }
-            //TODO: Szek A Create
-            var td = todo;
-
-            _todoRepository.AddTodo(td);
-            return RedirectToAction("Index");
         }
-
     }
 }

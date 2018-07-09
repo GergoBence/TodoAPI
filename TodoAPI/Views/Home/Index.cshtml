@@ -1,24 +1,589 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿@model IEnumerable<TodoAPI.Models.Todo>
+
+<h1 class="display-1">TODO: </h1>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Done)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ID);
+            </th>
+
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-lg-push-6">
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+
+                <td class="checkbox col-md-1">
+                    @Html.CheckBoxFor(modelItem => item.Done)
+                </td>
+                <td class="col-md-1">
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    <div class="form-group col-md-4">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-success" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID }, htmlAttributes: new { @class = "btn btn-danger" })
+                    </div>
+
+                </td>
+            </tr>
+        }
+
+    </table>*@
+<style>
+    ul.asd {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+@*----------------------------------------------Vue--------------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------*@
+<div class="col-md-12">
+
+
+    <div id="todo">
+        <div>
+            <button type="button" v-on:click="addTodo()" class="btn btn-primary btn-sm">Add Todo</button>
+            <input type="text" v-model="newT" v-on:keyup.enter="addTodo()" />
+        </div>
+
+        @*<p>{{ newT }}</p>*@
+        <ul class="asd">
+            <li v-for="todo in todos">
+                <label>
+                    <button type="button" v-on:click="removeTodo(todo)" class="btn btn-danger btn-sm">Remove</button>
+                    <input type="checkbox" v-on:change="toggle(todo)"
+                           v-bind:checked="todo.done">
+                    <del v-if="todo.done">
+                        {{ todo.text }}
+                    </del>
+                    <span v-else>
+                        {{ todo.text }}
+                    </span>
+
+                </label>
+            </li>
+        </ul>
+    </div>
 </div>
-<div class="row">
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="panel panel-body">
+    @*//panel 1 ------------------------------------------*@
     <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+
+        <div id="app">
+            {{money*2>5 ? 'nagyobb' : 'kisebb'}}
+        </div>
+
+        <div id="fname">
+            {{ getFullName() }}
+        </div>
+
+        <div id="paramFName">
+            {{ getFullName(firstname, lastname) }}
+        </div>
+
+        <div id="aLink">
+            <a v-bind:href="link">Ugrás az oldalra</a>
+        </div>
+
+        <div id="diTit">
+            <div v-bind:title="title1 + ' ' + title2 + ' ' + title3">
+                Dinamikus title teszt
+            </div>
+        </div>
+
+        <div id="click1">
+            <button v-on:click="openAlertWindow">Click here!</button>
+        </div>
+
+        <div id="click2">
+            <button v-on:click="openAlertWindow2('Button clicked2!', $event)">Click Here 2 !</button>
+        </div>
+
+        @*mivel a diven és a gombon is rajta van a click="openwindow esemény duplán futna le, de a .stop-al kivédi"*@
+        <div id="click3">
+            <div v-on:click="openWindow">
+                <button v-on:click.stop="openWindow">Click Here 3</button>
+            </div>
+        </div>
+
+        @*prevent felülírja a default action-t*@
+        <a id="fkLink" href="https://vuejshu" v-on:click.prevent="doSomething">Fake Jump to link</a>
+
+        @*Key modifier*@
+        <div id="keyMod">
+            <input type="text" v-on:keyup.enter="openWindow">
+        </div>
+        @*További módosítók: .tab, .delete, .esc, .space, .up, .down, .left, .right, .enter*@
+
+
+        @*multiple key modifier space és enter között vagy kapcsolat van*@
+        @*<div id="app">
+                <input type="text" v-on:keyup.enter.space="openWindow">
+            </div>*@
+
+        @*@*key modifier: shift a módosító ami kell az enterhez hogy a folyamat lefusson (and kapcsolat)*@
+        @*<div id="app">
+                <input type="text" v-on:keyup.shift.enter="openWindow">
+            </div>*@
+
+        @*kétirányú adatösszekötés*@
+        @*Módosítók
+            -trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
+            -number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
+            -lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy
+                írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti
+                a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
+        <div id="cmDt">
+            <input type="text" v-model="name" />
+            <p>Your name is: {{ name }}</p>
+        </div>
+
+        @*A feltételek kezelése sablon fájlunkban az v-if, v-else-if, v-else direktívákkal történik.*@
+
+        <div id="kor">
+            <p v-if="kor < 18">Az illető gyerek</p>
+            <p v-else-if="kor <60">Az illető közép korú</p>
+            <p v-else>Az illető idős korú</p>
+        </div>
+
+        <div id="kor2">
+            <p v-if="kor < 18 && kor>0">Az illető gyerek</p>
+            <p v-else-if="kor <60 & kor>17">Az illető közép korú</p>
+            <p v-else-if="kor >59">Az illető idős korú</p>
+            <p v-else>nincs érték</p>
+            <input type="text" v-model="kor" />
+        </div>
+
+        @*több elem egyy ágban való megjelenítése*@
+
+        <div id="kor3">
+            <p v-if="kor < 18">Gyerek</p>
+            <p v-else-if="kor<60">középkorú</p>
+            <p v-else>öreg</p>
+
+            <template v-if="kor>60">
+                <p>nyugdíjas</p>
+                <p>vén</p>
+            </template>
+        </div>
+
+        @*A v-show direktíva használatakor az elemünk amelyen alkalmazzuk a DOM-ban marad eltűntetés esetén,
+            tehát amikor a v-show értéke igaz.
+            A v-show értéke hamis, akkor egy inline stílust kap, mégpedig a display:none értékkel.
+            Ha pedig true, akkor pedig ez eltűnik.*@
+
+        <div id="show">
+            <div v-show="showText">
+                <p>show the first text</p>
+            </div>
+            <div v-show="!showText">
+                <p>show the second text</p>
+            </div>
+            <button v-on:click="showText = !showText"> Toggle Texts</button>
+        </div>
+
+        @*setTimeout csak a késleltetett betöltés modellezésére van*@
+
+        <div id="cloack">
+            <p v-cloak>{{ text }}</p>
+        </div>
+        @* ehhez be kell rakni a CSS-be:
+                [v-cloack]{
+                display:none;
+            }*@
+
+
+        @*//panel 1 close*@
     </div>
+
+    @*//panel 2 -------------------------------------*@
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+
+        <div id="for">
+            <ul>
+                <li v-for="car in cars">
+                    {{ car }}
+                </li>
+            </ul>
+        </div>
+
+        <div id="for2">
+            <ul>
+                <li v-for="car in cars">
+                    <div>{{ car.name }}: ({{ car.color}})</div>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div id="for3">
+            <ul>
+                <li v-for="(car, index) in cars">
+                    <div> {{ index+1 }}. {{car.name}}: {{car.color}}</div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div id="for4">
+            <ul>
+                <li v-for="(value, propertyName, index) in person">
+                    <div>
+                        {{ index+1 }}. {{ propertyName }}: {{ value }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div id="computed">
+            <button v-on:click="counter++">Increase</button>
+            <p>Counter: {{ counter }}</p>
+            <p>Your name: {{ fullName }}</p>
+        </div>
+
+        <div id="watch">
+            <input type="text" v-model="inputfield" />
+            <div v-if="charEntered">
+                <p>A mező értéke módosult</p>
+            </div>
+        </div>
+
+        <div id="filter">
+            {{ szoveg | nagybetuk }}
+        </div>
+
+        <div id="filter2">
+            {{ szoveg | nagybetuk(true) }}
+        </div>
+
+
+        @*//panel 2 close*@
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-    </div>
+
+    @*//panel 3*@
+
 </div>
+@*----------------------------------------------Vue-Script-------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------*@
+
+
+<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            money: 4
+
+        }
+    });
+
+    new Vue({
+        el: "#fname",
+        data: {
+            firstname: "Evans",
+            lastname: "Racok"
+        },
+        methods: {
+            getFullName: function () {
+                return this.firstname + ' ' + this.lastname;
+            }
+        }
+    });
+
+    new Vue({
+        el: '#paramFName',
+        data: {
+            firstname: 'Masale',
+            lastname: 'Aletran'
+        },
+        methods: {
+            getFullName: function (first, last) {
+                return first + ' ' + last;
+            }
+        }
+    });
+
+    new Vue({
+        el: "#aLink",
+        data: {
+            link: "https://vuejs.hu"
+        }
+    });
+
+    new Vue({
+        el: "#dirTit",
+        data: {
+            title1: "Dinamikusan",
+            title2: "hozzáadott",
+            title3: "cím"
+        }
+    });
+
+    new Vue({
+        el: "#click1",
+        methods: {
+            openAlertWindow: function () {
+                alert('Button Clicked!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#click2",
+        methods: {
+            openAlertWindow2: function (param, event) {
+                console.log(event);
+                alert(param);
+            }
+        }
+    });
+
+    new Vue({
+        el: "#click3",
+        methods: {
+            openWindow: function () {
+                alert('Button clicked!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#fkLink",
+        methods: {
+            doSomething: function () {
+                alert('Activate TrapCard!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#keyMod",
+        methods: {
+            openWindow: function () {
+                alert('Enter Key pressed!');
+            }
+        }
+    });
+
+    new Vue({
+        el: "#cmDt",
+        data: {
+            name: ''
+        }
+    })
+
+    new Vue({
+        el: "#kor",
+        data: {
+            kor: 22
+        }
+    })
+
+    new Vue({
+        el: "#kor2",
+        data: {
+            kor: 22
+        }
+    })
+
+    new Vue({
+        el: "#kor3",
+        data: {
+            kor: 62
+        }
+    })
+
+    new Vue({
+        el: "#show",
+        data: {
+            showText: true,
+        }
+    })
+
+    setTimeout(function () {
+        new Vue({
+            el: "#cloack",
+            data: {
+                text: "hello world"
+            }
+        })
+    }, 3000);
+
+    new Vue({
+        el: "#for",
+        data: {
+            cars: ['BMW', 'Ford', 'Dodge', 'Subaru']
+        }
+    })
+
+    new Vue({
+        el: "#for2",
+        data: {
+            cars: [
+                { name: "BMW", color: "Black" },
+                { name: "Ford", color: "blue" },
+                { name: "Dodge", color: "grey" },
+                { name: "Subaru", color: "white" }
+            ]
+        }
+    })
+
+    new Vue({
+        el: "#for3",
+        data: {
+            cars: [
+                { name: "BMW", color: "Black" },
+                { name: "Ford", color: "White" },
+                { name: "Subaru", color: "Blue" },
+                { name: "Toyota", color: "White" },
+            ]
+        }
+    })
+
+    new Vue({
+        el: "#for4",
+        data: {
+            person: {
+                name: "John Doe",
+                age: 36,
+                sex: "male",
+                job: "postman"
+            }
+        }
+    })
+
+
+    //ha ez computed helyett methods akkor mindíg le fog futni az alert a gomb megnyomásakor
+    new Vue({
+        el: '#computed',
+        data: {
+            firstName: 'John',
+            lastName: 'Doe',
+            counter: 1
+        },
+        computed: {
+            fullName: function () {
+                //alert('Ez le fog futni mindig!');
+                return this.firstName + ' ' + this.lastName;
+            }
+        }
+
+        //computed: {
+        //    get: function () {
+        //        return this.firstName + " " + this.lastName;
+        //    };
+        //    set: function (value) {
+        //        var splitted = value.split(' ');
+        //        this.firstName = splitted[0];
+        //        this.lastName = splitted[1];
+        //    }
+        //}
+    });
+
+
+    new Vue({
+        el: "#watch",
+        data: {
+            inputfield: '',
+            charEntered: false
+        },
+        watch: {
+            inputfield: function (value) {
+                this.charEntered = true;
+                var vm = this;
+                setTimeout(function () {
+                    vm.charEntered = false;
+                }, 500)
+            }
+        }
+    })
+
+    new Vue({
+        el: "#filter",
+        data: {
+            szoveg: "Szűrők használata"
+        },
+        filters: {
+            nagybetuk: function (value) {
+                return value.toUpperCase();
+            }
+        }
+    })
+
+    new Vue({
+        el: "#filter2",
+        data: {
+            szoveg: "szűrők használata"
+        },
+        filters: {
+            nagybetuk: function (value, elsoNagy) {
+                if (elsoNagy) {
+                    return value.charAt(0).toUpperCase() + value.slice(1);
+                } else {
+                    return value.toUpperCase();
+                }
+            }
+        }
+    })
+
+    new Vue({
+        el: "#todo",
+        data: {
+            todos: [],
+            newT: ''
+        },
+
+        created() {
+            fetch('todo/get')
+                .then(res => res.json())
+                .then(data => {
+                    this.todos = data;
+                })
+        },
+
+        methods: {
+            toggle: function (todo) {
+                todo.done = !todo.done
+            },
+
+            addTodo: function () {
+                this.todos.push({ text: this.newT, done: false })
+            },
+            removeTodo: function (todo) {
+                this.todos.splice(this.todos.indexOf(todo), 1)
+            }
+        }
+    })
+
+
+
+
+
+</script>
+

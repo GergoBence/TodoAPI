@@ -5,9 +5,8 @@ using System.Web;
 
 namespace TodoAPI.Models
 {
-    public class Todo : Entity
+    public abstract class Entity
     {
-        public string Content { get; set; }
-        public bool Done { get; set; }
+        public int ID { get; set; }
     }
 }

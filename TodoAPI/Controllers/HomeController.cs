@@ -12,6 +12,8 @@ namespace TodoAPI.Controllers
         {
             ViewBag.Title = "Home Page";
 
+            TodoContextConsumer.Consume();
+
             return View();
         }
 

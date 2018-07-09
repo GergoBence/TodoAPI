@@ -2,7 +2,7 @@
 
 <h1 class="display-1">TODO: </h1>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class = "btn btn-primary" })
 </p>
 <table class="table">
@@ -43,12 +43,55 @@
         </tr>
     }
 
-</table>
+</table>*@
+<style>
+    ul.asd {
+       list-style-type:none;
+       margin: 0;
+       padding: 0;
+    }
+</style>
+
 @*----------------------------------------------Vue--------------------------------------------------*@
 @*---------------------------------------------------------------------------------------------------*@
+<div class="col-md-12">
+    
+
+    <div id="todo">
+        <div>
+            <button type="button" v-on:click="addTodo()" class="btn btn-primary btn-sm">Add Todo</button>
+            <input type="text" v-model="newT" v-on:keyup.enter="addTodo()" />
+        </div>
+        
+        @*<p>{{ newT }}</p>*@
+        <ul class="asd">
+            <li v-for="todo in todos" >
+                <label>
+                    <button type="button" v-on:click="removeTodo(todo)" class="btn btn-danger btn-sm">Remove</button>
+                    <input type="checkbox" v-on:change="toggle(todo)"
+                           v-bind:checked="todo.done">
+                    <del v-if="todo.done">
+                        {{ todo.text }}
+                    </del>
+                    <span v-else>
+                        {{ todo.text }}
+                    </span>
+
+                </label>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 <div class="panel panel-body">
-@*//panel 1 ------------------------------------------*@
+    @*//panel 1 ------------------------------------------*@
     <div class="col-md-4">
 
         <div id="app">
@@ -100,21 +143,21 @@
 
         @*multiple key modifier space és enter között vagy kapcsolat van*@
         @*<div id="app">
-            <input type="text" v-on:keyup.enter.space="openWindow">
-        </div>*@
+                <input type="text" v-on:keyup.enter.space="openWindow">
+            </div>*@
 
         @*@*key modifier: shift a módosító ami kell az enterhez hogy a folyamat lefusson (and kapcsolat)*@
         @*<div id="app">
-            <input type="text" v-on:keyup.shift.enter="openWindow">
-        </div>*@
+                <input type="text" v-on:keyup.shift.enter="openWindow">
+            </div>*@
 
         @*kétirányú adatösszekötés*@
         @*Módosítók
-        -trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
-        -number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
-        -lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy
-            írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti
-            a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
+            -trim: minden üres értéket eltávolít a mezőbe írt string elejéről és végéről
+            -number: hasonló a javascript parseInt() funkcióhoz, számként fogja értelmezni a beírt karaktereket
+            -lazy: az input mező a v-model direktívával alap esetben egyből reagál a billentyű leütésre, ahogy
+                írunk bele, ez a módosító lehetővé teszti azt, hogy csak akkor adja át az adatot ha a mező elveszti
+                a fókuszt, azaz kilépünk a mezőből (TAB-al, klikkeléssel).*@
         <div id="cmDt">
             <input type="text" v-model="name" />
             <p>Your name is: {{ name }}</p>
@@ -150,9 +193,9 @@
         </div>
 
         @*A v-show direktíva használatakor az elemünk amelyen alkalmazzuk a DOM-ban marad eltűntetés esetén,
-        tehát amikor a v-show értéke igaz.
-        A v-show értéke hamis, akkor egy inline stílust kap, mégpedig a display:none értékkel.
-        Ha pedig true, akkor pedig ez eltűnik.*@
+            tehát amikor a v-show értéke igaz.
+            A v-show értéke hamis, akkor egy inline stílust kap, mégpedig a display:none értékkel.
+            Ha pedig true, akkor pedig ez eltűnik.*@
 
         <div id="show">
             <div v-show="showText">
@@ -170,9 +213,16 @@
             <p v-cloak>{{ text }}</p>
         </div>
         @* ehhez be kell rakni a CSS-be:
-            [v-cloack]{
-            display:none;
-        }*@
+                [v-cloack]{
+                display:none;
+            }*@
+
+
+        @*//panel 1 close*@
+    </div>
+
+    @*//panel 2 -------------------------------------*@
+    <div class="col-md-4">
 
         <div id="for">
             <ul>
@@ -199,12 +249,6 @@
                 </li>
             </ul>
         </div>
-
-        @*//panel 1 close*@
-    </div>
-
-    @*//panel 2 -------------------------------------*@
-    <div class="col-md-4">
 
 
         <div id="for4">
@@ -243,35 +287,7 @@
     </div>
 
     @*//panel 3*@
-    <div class="col-md-4">
 
-        <div id="todo">
-            <input type="text" v-model="newT"/>
-            <button type="button" v-on:click="addTodo()">Add Todo</button>
-            @*<p>{{ newT }}</p>*@
-            <ol>
-                <li v-for="todo in todos">
-                    <label>
-                        <input type="checkbox" v-on:change="toggle(todo)"
-                               v-bind:checked="todo.done">
-                        <del v-if="todo.done">
-                            {{ todo.text }}
-                        </del>
-                        <span v-else>
-                            {{ todo.text }}
-                        </span>
-                        <button type="button" v-on:click="removeTodo(todo)">Remove</button>
-                    </label>
-                </li>
-            </ol>
-        </div>
-
-
-
-
-
-
-    </div>
 </div>
 @*----------------------------------------------Vue-Script-------------------------------------------*@
 @*---------------------------------------------------------------------------------------------------*@
@@ -463,7 +479,7 @@
     })
 
 
-        //ha ez computed helyett methods akkor mindíg le fog futni az alert a gomb megnyomásakor
+    //ha ez computed helyett methods akkor mindíg le fog futni az alert a gomb megnyomásakor
     new Vue({
         el: '#computed',
         data: {
@@ -539,25 +555,28 @@
     new Vue({
         el: "#todo",
         data: {
-            todos: [
-                { text: "demoUndone", done: true },
-                { text: "demoUnDone", done: false }
-            ],
-            newT : ''
+            todos: [],
+            newT: ''
         },
+
+        created() {
+            fetch('api/todo')
+                .then(res => res.json())
+                .then(data => {
+                    this.todos = data;
+                })
+        },
+
         methods: {
             toggle: function (todo) {
                 todo.done = !todo.done
             },
 
             addTodo: function () {
-                //todo.text = newT;
-                //todo.done = false;
-                //this.todos.psush()
-                this.todos.push({text: this.newT, done:false})
+                this.todos.push({ text: this.newT, done: false })
             },
-            removeTodo: function (todo) {                
-                this.todos.splice(this.todos.indexOf(todo),1)
+            removeTodo: function (todo) {
+                this.todos.splice(this.todos.indexOf(todo), 1)
             }
         }
     })

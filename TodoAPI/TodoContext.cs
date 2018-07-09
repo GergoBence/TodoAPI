@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SQLite;
 using System.Linq;
 using System.Web;
 using TodoAPI.Models;
@@ -9,19 +10,15 @@ namespace TodoAPI
 {
     public class TodoContext : DbContext
     {
-        public TodoContext(string connectionString = ":memory:")
-        //public TodoContext(string connectionString = "Data Source=(LocalDb)\\LocalDBDemo;Integrated Security=SSPI;")
-            : base(connectionString)
-        {
-
-        }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Todo>()
-                .HasKey(i => i.ID);
+                .ToTable("todos")
+                .HasKey(i => i.ID)
+                .Property(i => i.Content)
+                    .HasColumnName("desc");
         }
 
         public DbSet<Todo> Todos { get; set; }
